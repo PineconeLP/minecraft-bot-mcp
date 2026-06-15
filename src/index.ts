@@ -4,6 +4,7 @@ import {
   ResourceTemplate,
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import * as mineflayer from "mineflayer";
+import { Vec3 } from "vec3";
 import { z } from "zod";
 
 interface ChatEntry {
@@ -139,6 +140,105 @@ mcp.registerTool(
           type: "text" as const,
           text: JSON.stringify({ status: "sent" }),
         },
+      ],
+    };
+  },
+);
+
+mcp.registerTool(
+  "open_container",
+  {
+    description:
+      "Open a container block at the given coordinates and return its contents",
+    inputSchema: z.object({
+      botId: z.string(),
+      x: z.number().int(),
+      y: z.number().int(),
+      z: z.number().int(),
+    }),
+  },
+  async (args) => {
+    const bot = bots.get(args.botId);
+
+    if (!bot) {
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: JSON.stringify({ error: `Bot ${args.botId} not found` }),
+          },
+        ],
+        isError: true,
+      };
+    }
+
+    const block = bot.blockAt(new Vec3(args.x, args.y, args.z));
+
+    if (!block) {
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: JSON.stringify({
+              error: "No block found at given coordinates",
+            }),
+          },
+        ],
+        isError: true,
+      };
+    }
+
+    const container = await bot.openContainer(block);
+    const items = container.slots.flatMap((item) =>
+      item ? [{ name: item.name, count: item.count, slot: item.slot }] : [],
+    );
+
+    return {
+      content: [{ type: "text" as const, text: JSON.stringify({ items }) }],
+    };
+  },
+);
+
+mcp.registerTool(
+  "close_inventory",
+  {
+    description: "Close the bot's currently open window or container",
+    inputSchema: z.object({
+      botId: z.string(),
+    }),
+  },
+  async (args) => {
+    const bot = bots.get(args.botId);
+
+    if (!bot) {
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: JSON.stringify({ error: `Bot ${args.botId} not found` }),
+          },
+        ],
+        isError: true,
+      };
+    }
+
+    if (!bot.currentWindow) {
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: JSON.stringify({ error: "No window is currently open" }),
+          },
+        ],
+        isError: true,
+      };
+    }
+
+    bot.closeWindow(bot.currentWindow);
+
+    return {
+      content: [
+        { type: "text" as const, text: JSON.stringify({ status: "closed" }) },
       ],
     };
   },
