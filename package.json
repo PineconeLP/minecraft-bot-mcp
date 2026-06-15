@@ -4,9 +4,10 @@
   "description": "An MCP server to create and control Minecraft bots via Mineflayer.",
   "main": "dist/index.js",
   "scripts": {
+    "dev": "tsc --watch",
     "build": "tsc",
-    "start": "npm run build && node dist/index.js",
-    "dev": "tsx src/index.ts"
+    "inspect": "npm run build && npx @modelcontextprotocol/inspector node dist/index.js",
+    "start": "npm run build && node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -14,7 +15,7 @@
   },
   "author": "PineconeLP",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",
     "mineflayer": "^4.37.1"
