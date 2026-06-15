@@ -61,7 +61,7 @@ export class Bot {
     return this.chatHistory;
   }
 
-  chat(message: string) {
+  sendChat(message: string) {
     this.mineflayerBot.chat(message);
   }
 
