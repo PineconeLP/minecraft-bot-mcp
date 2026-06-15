@@ -3,20 +3,10 @@ import {
   McpServer,
   ResourceTemplate,
 } from "@modelcontextprotocol/sdk/server/mcp.js";
-import * as mineflayer from "mineflayer";
-import { Vec3 } from "vec3";
 import { z } from "zod";
+import { Bot } from "./entities/bot.js";
 
-interface ChatEntry {
-  message: string;
-  sender: "player" | "system";
-  timestamp: string;
-}
-
-const MAX_HISTORY = 100;
-
-const bots = new Map<string, mineflayer.Bot>();
-const chatHistories = new Map<string, ChatEntry[]>();
+const bots = new Map<string, Bot>();
 
 const mcp = new McpServer({
   name: "minecraft-bot-mcp",
@@ -39,42 +29,11 @@ mcp.registerTool(
     const botId = `bot_${bots.size}`;
 
     try {
-      const bot = mineflayer.createBot({
+      const bot = await Bot.connect({
         host: args.host,
         port: args.port,
         username: args.username,
         auth: "offline",
-      });
-
-      await new Promise<void>((resolve, reject) => {
-        const timer = setTimeout(
-          () => reject(new Error("Connection timed out")),
-          10000,
-        );
-
-        bot.once("login", () => {
-          clearTimeout(timer);
-          resolve();
-        });
-
-        bot.once("error", (err) => {
-          clearTimeout(timer);
-          reject(err);
-        });
-      });
-
-      chatHistories.set(botId, []);
-
-      bot.on("messagestr", (message, position) => {
-        const history = chatHistories.get(botId)!;
-
-        history.push({
-          message,
-          sender: position === "chat" ? "player" : "system",
-          timestamp: new Date().toISOString(),
-        });
-
-        if (history.length > MAX_HISTORY) history.shift();
       });
 
       bots.set(botId, bot);
@@ -105,6 +64,45 @@ mcp.registerTool(
         isError: true,
       };
     }
+  },
+);
+
+mcp.registerTool(
+  "disconnect",
+  {
+    description: "Disconnect a bot from the server",
+    inputSchema: z.object({
+      botId: z.string(),
+    }),
+  },
+  async (args) => {
+    const bot = bots.get(args.botId);
+
+    if (!bot) {
+      return {
+        content: [
+          {
+            type: "text" as const,
+            text: JSON.stringify({ error: `Bot ${args.botId} not found` }),
+          },
+        ],
+        isError: true,
+      };
+    }
+
+    bot.disconnect();
+    bots.delete(args.botId);
+
+    mcp.sendResourceListChanged();
+
+    return {
+      content: [
+        {
+          type: "text" as const,
+          text: JSON.stringify({ status: "disconnected" }),
+        },
+      ],
+    };
   },
 );
 
@@ -172,30 +170,29 @@ mcp.registerTool(
       };
     }
 
-    const block = bot.blockAt(new Vec3(args.x, args.y, args.z));
+    try {
+      const container = await bot.openContainer(args.x, args.y, args.z);
 
-    if (!block) {
+      const items = container.slots.flatMap((item) =>
+        item ? [{ name: item.name, count: item.count, slot: item.slot }] : [],
+      );
+
+      return {
+        content: [{ type: "text" as const, text: JSON.stringify({ items }) }],
+      };
+    } catch (error) {
       return {
         content: [
           {
             type: "text" as const,
             text: JSON.stringify({
-              error: "No block found at given coordinates",
+              error: error instanceof Error ? error.message : String(error),
             }),
           },
         ],
         isError: true,
       };
     }
-
-    const container = await bot.openContainer(block);
-    const items = container.slots.flatMap((item) =>
-      item ? [{ name: item.name, count: item.count, slot: item.slot }] : [],
-    );
-
-    return {
-      content: [{ type: "text" as const, text: JSON.stringify({ items }) }],
-    };
   },
 );
 
@@ -222,25 +219,27 @@ mcp.registerTool(
       };
     }
 
-    if (!bot.currentWindow) {
+    try {
+      bot.closeInventory();
+
+      return {
+        content: [
+          { type: "text" as const, text: JSON.stringify({ status: "closed" }) },
+        ],
+      };
+    } catch (error) {
       return {
         content: [
           {
             type: "text" as const,
-            text: JSON.stringify({ error: "No window is currently open" }),
+            text: JSON.stringify({
+              error: error instanceof Error ? error.message : String(error),
+            }),
           },
         ],
         isError: true,
       };
     }
-
-    bot.closeWindow(bot.currentWindow);
-
-    return {
-      content: [
-        { type: "text" as const, text: JSON.stringify({ status: "closed" }) },
-      ],
-    };
   },
 );
 
@@ -256,14 +255,12 @@ mcp.registerResource(
     }),
   }),
   {
-    description: "Recent chat messages for a bot (up to 100)",
+    description: "Recent chat messages for a bot",
     mimeType: "application/json",
   },
   async (uri, variables) => {
     const botId = variables.botId as string;
-    const history = chatHistories.get(botId) ?? [];
-
-    console.error(history);
+    const history = bots.get(botId)?.getChat() ?? [];
 
     return {
       contents: [
