@@ -4,9 +4,10 @@ import {
   ResourceTemplate,
 } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
-import { Bot } from "./entities/bot.js";
+import { Bot } from "./entities/bot/bot.js";
+import { InMemoryBotRegistry } from "./entities/bot/in-memory-bot-registry.js";
 
-const bots = new Map<string, Bot>();
+const botRegistry = new InMemoryBotRegistry();
 
 const mcp = new McpServer({
   name: "minecraft-bot-mcp",
@@ -26,8 +27,6 @@ mcp.registerTool(
     }),
   },
   async (args) => {
-    const botId = `bot_${bots.size}`;
-
     try {
       const bot = await Bot.connect({
         host: args.host,
@@ -36,7 +35,7 @@ mcp.registerTool(
         auth: "offline",
       });
 
-      bots.set(botId, bot);
+      const botId = botRegistry.add(bot);
 
       mcp.sendResourceListChanged();
 
@@ -76,7 +75,7 @@ mcp.registerTool(
     }),
   },
   async (args) => {
-    const bot = bots.get(args.botId);
+    const bot = botRegistry.get(args.botId);
 
     if (!bot) {
       return {
@@ -91,7 +90,7 @@ mcp.registerTool(
     }
 
     bot.disconnect();
-    bots.delete(args.botId);
+    botRegistry.delete(args.botId);
 
     mcp.sendResourceListChanged();
 
@@ -116,7 +115,7 @@ mcp.registerTool(
     }),
   },
   async (args) => {
-    const bot = bots.get(args.botId);
+    const bot = botRegistry.get(args.botId);
 
     if (!bot) {
       return {
@@ -156,7 +155,7 @@ mcp.registerTool(
     }),
   },
   async (args) => {
-    const bot = bots.get(args.botId);
+    const bot = botRegistry.get(args.botId);
 
     if (!bot) {
       return {
@@ -205,7 +204,7 @@ mcp.registerTool(
     }),
   },
   async (args) => {
-    const bot = bots.get(args.botId);
+    const bot = botRegistry.get(args.botId);
 
     if (!bot) {
       return {
@@ -247,7 +246,7 @@ mcp.registerResource(
   "chat",
   new ResourceTemplate("minecraft://{botId}/chat", {
     list: () => ({
-      resources: [...bots.keys()].map((botId) => ({
+      resources: [...botRegistry.keys()].map((botId) => ({
         name: `${botId} chat`,
         uri: `minecraft://${botId}/chat`,
         mimeType: "application/json",
@@ -260,7 +259,7 @@ mcp.registerResource(
   },
   async (uri, variables) => {
     const botId = variables.botId as string;
-    const history = bots.get(botId)?.getChat() ?? [];
+    const history = botRegistry.get(botId)?.getChat() ?? [];
 
     return {
       contents: [
