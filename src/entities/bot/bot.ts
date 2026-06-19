@@ -1,3 +1,4 @@
+import minecraftData from "minecraft-data";
 import * as mineflayer from "mineflayer";
 import { Vec3 } from "vec3";
 
@@ -81,5 +82,31 @@ export class Bot {
     }
 
     this.mineflayerBot.closeWindow(this.mineflayerBot.currentWindow);
+  }
+
+  findNearbyBlocks(
+    blockName: string,
+    maxDistance: number = 16,
+    count: number = 16,
+  ) {
+    const data = minecraftData(this.mineflayerBot.version);
+    const block = data.blocksByName[blockName];
+
+    if (!block) {
+      throw new Error(`Unknown block name: ${blockName}`);
+    }
+
+    return this.mineflayerBot
+      .findBlocks({
+        matching: block.id,
+        maxDistance,
+        count,
+      })
+      .map((pos) => ({
+        name: blockName,
+        x: pos.x,
+        y: pos.y,
+        z: pos.z,
+      }));
   }
 }

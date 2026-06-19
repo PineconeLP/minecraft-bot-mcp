@@ -8,6 +8,7 @@ import { createSendChatTool } from "./tools/chat.js";
 import { createCloseInventoryTool } from "./tools/close-inventory.js";
 import { createConnectTool } from "./tools/connect.js";
 import { createDisconnectTool } from "./tools/disconnect.js";
+import { createFindNearbyBlocksTool } from "./tools/find-nearby-blocks.js";
 import { createOpenContainerTool } from "./tools/open-container.js";
 
 const mcp = new McpServer({
@@ -23,6 +24,7 @@ const toolFactories = [
   createSendChatTool,
   createOpenContainerTool,
   createCloseInventoryTool,
+  createFindNearbyBlocksTool,
 ];
 
 toolFactories.forEach((createTool) => {
