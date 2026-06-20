@@ -1,6 +1,6 @@
 {
   "name": "minecraft-bot-mcp",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "mcpName": "io.github.pineconelp/minecraft-bot-mcp",
   "description": "An MCP server to create and control Minecraft bots via Mineflayer.",
   "main": "dist/index.js",
