@@ -19,16 +19,18 @@ Add the server to your MCP client's config:
 
 ## Usage
 
+> Note that bots can only connect to server's that have Microsoft authentication disabled (`online-mode=false`).
+
 ### Tools
 
 | Tool | Description |
 |------|-------------|
-| `connect` | Spawn a bot and connect it to a Minecraft server |
-| `disconnect` | Disconnect a bot from the server |
-| `send-chat` | Send a chat message as a bot |
-| `open-container` | Open a container at given coordinates and return its contents |
-| `close-inventory` | Close the currently open container/inventory |
-| `find-nearby-blocks` | Find blocks of a given type within a radius |
+| `connect` | Connect a bot to a Minecraft server. Returns a `botId` to control the bot in subsequent calls. |
+| `disconnect` | Disconnect a bot from the server. |
+| `send-chat` | Send a chat message as a bot. |
+| `open-container` | Open a container at given coordinates and return its contents. |
+| `close-inventory` | Close the currently open container/inventory. |
+| `find-nearby-blocks` | Find blocks of a given type within a radius. |
 
 > More tools coming soon!
 
@@ -36,7 +38,7 @@ Add the server to your MCP client's config:
 
 | Resource | URI | Description |
 |----------|-----|-------------|
-| Chat | `minecraft://{botId}/chat` | Recent chat messages seen by a bot |
+| Chat | `minecraft://{botId}/chat` | Recent chat messages seen by a bot. |
 
 ## Development
 
