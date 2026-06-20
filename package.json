@@ -1,17 +1,23 @@
 {
   "name": "minecraft-bot-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
+  "mcpName": "io.github.pineconelp/minecraft-bot-mcp",
   "description": "An MCP server to create and control Minecraft bots via Mineflayer.",
   "main": "dist/index.js",
+  "bin": {
+    "minecraft-bot-mcp": "dist/index.js"
+  },
   "scripts": {
     "dev": "tsc --watch",
-    "build": "tsc",
+    "build": "npm run clean && tsc",
     "inspect": "npm run build && npx @modelcontextprotocol/inspector node dist/index.js",
-    "start": "npm run build && node dist/index.js"
+    "start": "npm run build && node dist/index.js",
+    "clean": "rm -rf dist",
+    "prepare": "npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com-pineconelp:PineconeLP/minecraft-bot-mcp.git"
+    "url": "https://github.com/PineconeLP/minecraft-bot-mcp"
   },
   "author": "PineconeLP",
   "license": "ISC",

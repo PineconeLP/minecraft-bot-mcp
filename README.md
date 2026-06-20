@@ -4,29 +4,14 @@ An MCP server to create and orchestrate multiple Minecraft bots via [Mineflayer]
 
 ## Installation
 
-> I'll publish to npm soon so it's easier to install.
-
-1. Pull this repository locally:
-
-```
-git clone git@github.com:PineconeLP/minecraft-bot-mcp.git
-```
-
-2. Build the MCP server:
-
-```
-npm install
-npm run build
-```
-
-3. Add the client to your MCP client's config:
+Add the server to your MCP client's config:
 
 ```json
 {
   "mcpServers": {
     "minecraft-bot": {
-      "command": "node",
-      "args": ["/path/to/minecraft-bot-mcp/dist/index.js"]
+      "command": "npx",
+      "args": ["-y", "minecraft-bot-mcp"]
     }
   }
 }
@@ -45,6 +30,8 @@ npm run build
 | `close-inventory` | Close the currently open container/inventory |
 | `find-nearby-blocks` | Find blocks of a given type within a radius |
 
+> More tools coming soon!
+
 ### Resources
 
 | Resource | URI | Description |
@@ -52,6 +39,12 @@ npm run build
 | Chat | `minecraft://{botId}/chat` | Recent chat messages seen by a bot |
 
 ## Development
+
+Install packages:
+
+```bash
+npm install
+```
 
 Build MCP server in watch mode:
 
@@ -63,6 +56,19 @@ Build and start MCP server in inspector:
 
 ```bash
 npm run inspect
+```
+
+Point MCP client to local server build:
+
+```json
+{
+  "mcpServers": {
+    "minecraft-bot": {
+      "command": "node",
+      "args": ["/path/to/minecraft-bot-mcp/dist/index.js"]
+    }
+  }
+}
 ```
 
 ## Contributing
