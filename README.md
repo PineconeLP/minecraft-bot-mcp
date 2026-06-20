@@ -1,6 +1,6 @@
 # Minecraft Bot MCP 
 
-An MCP server to create and control Minecraft bots via [Mineflayer](https://github.com/PrismarineJS/mineflayer).
+An MCP server to create and orchestrate multiple Minecraft bots via [Mineflayer](https://github.com/PrismarineJS/mineflayer).
 
 ## Installation
 
@@ -49,7 +49,7 @@ npm run build
 
 | Resource | URI | Description |
 |----------|-----|-------------|
-| Chat history | `minecraft://{botId}/chat` | Recent chat messages seen by a bot |
+| Chat | `minecraft://{botId}/chat` | Recent chat messages seen by a bot |
 
 ## Development
 
