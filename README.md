@@ -27,6 +27,7 @@ Add the server to your MCP client's config:
 |------|-------------|
 | `connect` | Connect a bot to a Minecraft server. Returns a `botId` to control the bot in subsequent calls. |
 | `disconnect` | Disconnect a bot from the server. |
+| `read-chat` | Read recent chat messages seen by a bot. Accepts an optional `limit` for the number of recent messages to return. |
 | `send-chat` | Send a chat message as a bot. |
 | `open-container` | Open a container at given coordinates and return its contents. |
 | `close-inventory` | Close the currently open container/inventory. |
@@ -34,12 +35,6 @@ Add the server to your MCP client's config:
 | `equip-item` | Equip an item from the bot's inventory to a destination slot (`hand`, `off-hand`, `head`, `torso`, `legs`, `feet`). Supports matching by custom (anvil-renamed) display name. |
 
 > More tools coming soon!
-
-### Resources
-
-| Resource | URI | Description |
-|----------|-----|-------------|
-| Chat | `minecraft://{botId}/chat` | Recent chat messages seen by a bot. |
 
 ## Development
 
