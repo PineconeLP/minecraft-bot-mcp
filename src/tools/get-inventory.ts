@@ -1,11 +1,11 @@
 import { z } from "zod";
 import type { Tool, ToolContext } from "./tool.js";
 
-export function createDisconnectTool({ botRegistry }: ToolContext): Tool {
+export function createGetInventoryTool({ botRegistry }: ToolContext): Tool {
   return {
-    name: "disconnect",
+    name: "get-inventory",
     config: {
-      description: "Disconnect a bot from the server",
+      description: "Get the contents of the bot's inventory",
       inputSchema: {
         botId: z.string(),
       },
@@ -25,13 +25,10 @@ export function createDisconnectTool({ botRegistry }: ToolContext): Tool {
         };
       }
 
-      bot.disconnect();
-      botRegistry.delete(args.botId);
+      const items = bot.getInventory();
 
       return {
-        content: [
-          { type: "text" as const, text: JSON.stringify({ status: "disconnected" }) },
-        ],
+        content: [{ type: "text" as const, text: JSON.stringify({ items }) }],
       };
     },
   };

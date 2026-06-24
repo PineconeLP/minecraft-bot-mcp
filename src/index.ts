@@ -8,6 +8,7 @@ import { createConnectTool } from "./tools/connect.js";
 import { createDisconnectTool } from "./tools/disconnect.js";
 import { createEquipItemTool } from "./tools/equip-item.js";
 import { createFindNearbyBlocksTool } from "./tools/find-nearby-blocks.js";
+import { createGetInventoryTool } from "./tools/get-inventory.js";
 import { createOpenContainerTool } from "./tools/open-container.js";
 
 const mcp = new McpServer({
@@ -26,6 +27,7 @@ const toolFactories = [
   createCloseInventoryTool,
   createFindNearbyBlocksTool,
   createEquipItemTool,
+  createGetInventoryTool,
 ];
 
 toolFactories.forEach((createTool) => {

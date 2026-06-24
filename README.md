@@ -33,6 +33,7 @@ Add the server to your MCP client's config:
 | `close-inventory` | Close the currently open container/inventory. |
 | `find-nearby-blocks` | Find blocks of a given type within a radius. |
 | `equip-item` | Equip an item from the bot's inventory to a destination slot (`hand`, `off-hand`, `head`, `torso`, `legs`, `feet`). Supports matching by custom (anvil-renamed) display name. |
+| `get_inventory` | Get the contents of the bot's inventory. Returns a list of items with `name`, `count`, `slot`, and `customName`. |
 
 > More tools coming soon!
 

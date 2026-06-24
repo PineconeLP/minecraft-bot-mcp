@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Bot } from "../entities/bot/bot.js";
 import type { Tool, ToolContext } from "./tool.js";
 
-export function createConnectTool({ mcp, botRegistry }: ToolContext): Tool {
+export function createConnectTool({ botRegistry }: ToolContext): Tool {
   return {
     name: "connect",
     config: {
@@ -30,8 +30,6 @@ export function createConnectTool({ mcp, botRegistry }: ToolContext): Tool {
         });
 
         const botId = botRegistry.add(bot);
-
-        mcp.sendResourceListChanged();
 
         return {
           content: [

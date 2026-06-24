@@ -86,6 +86,17 @@ export class Bot {
     this.mineflayerBot.closeWindow(this.mineflayerBot.currentWindow);
   }
 
+  getInventory() {
+    return this.mineflayerBot.inventory.slots
+      .filter((slot): slot is Item => slot !== null)
+      .map((item) => ({
+        name: item.name,
+        count: item.count,
+        slot: item.slot,
+        customName: item.customName,
+      }));
+  }
+
   async equipItem(
     itemName: string,
     destination: mineflayer.EquipmentDestination,
