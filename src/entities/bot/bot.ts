@@ -1,6 +1,8 @@
 import minecraftData from "minecraft-data";
 import * as mineflayer from "mineflayer";
+import { Item } from "prismarine-item";
 import { Vec3 } from "vec3";
+import { z } from "zod";
 
 const MAX_CHAT_HISTORY = 100;
 
@@ -82,6 +84,45 @@ export class Bot {
     }
 
     this.mineflayerBot.closeWindow(this.mineflayerBot.currentWindow);
+  }
+
+  async equipItem(
+    itemName: string,
+    destination: mineflayer.EquipmentDestination,
+    customName?: string,
+  ) {
+    let items = this.mineflayerBot.inventory.slots
+      .filter((slot): slot is Item => slot !== null)
+      .filter((item) => item.name === itemName);
+
+    if (customName !== undefined) {
+      const customNameSchema = z.object({
+        type: z.literal("string"),
+        value: z.string(),
+      });
+
+      items = items.filter((item) => {
+        if (!item.customName) {
+          return false;
+        }
+
+        const parsed = customNameSchema.safeParse(item.customName);
+
+        const nameStr = parsed.success
+          ? parsed.data.value
+          : String(item.customName);
+
+        return nameStr.includes(customName);
+      });
+    }
+
+    if (items.length === 0) {
+      throw new Error(
+        `No item found matching name "${itemName}"${customName ? ` with custom name "${customName}"` : ""}`,
+      );
+    }
+
+    await this.mineflayerBot.equip(items[0], destination);
   }
 
   findNearbyBlocks(
