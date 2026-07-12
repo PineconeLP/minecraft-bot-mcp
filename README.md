@@ -32,6 +32,8 @@ Add the server to your MCP client's config:
 | `open-container` | Open a container at given coordinates and return its contents. |
 | `close-inventory` | Close the currently open container/inventory. |
 | `find-nearby-blocks` | Find blocks of a given type within a radius. |
+| `find-nearby-entities` | Find entities near the bot within a radius, optionally filtered by type. Returns each entity's `id`, `name`, `type`, `username`, position, and `distance`. |
+| `interact-entity` | Right-click (use) an entity by its `id`, e.g. to interact with a villager. The entity must be within reach. |
 | `equip-item` | Equip an item from the bot's inventory to a destination slot (`hand`, `off-hand`, `head`, `torso`, `legs`, `feet`). Supports matching by custom (anvil-renamed) display name. |
 | `get_inventory` | Get the contents of the bot's inventory. Returns a list of items with `name`, `count`, `slot`, and `customName`. |
 

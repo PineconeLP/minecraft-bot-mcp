@@ -136,6 +136,43 @@ export class Bot {
     await this.mineflayerBot.equip(items[0], destination);
   }
 
+  findNearbyEntities(
+    entityType?: string,
+    maxDistance: number = 16,
+    count: number = 16,
+  ) {
+    const origin = this.mineflayerBot.entity.position;
+
+    return Object.values(this.mineflayerBot.entities)
+      .filter((entity) => entity !== this.mineflayerBot.entity)
+      .filter(
+        (entity) => entityType === undefined || entity.name === entityType,
+      )
+      .map((entity) => ({
+        id: entity.id,
+        name: entity.name ?? null,
+        type: entity.type ?? null,
+        username: entity.username ?? null,
+        x: entity.position.x,
+        y: entity.position.y,
+        z: entity.position.z,
+        distance: entity.position.distanceTo(origin),
+      }))
+      .filter((entity) => entity.distance <= maxDistance)
+      .sort((a, b) => a.distance - b.distance)
+      .slice(0, count);
+  }
+
+  async interactEntity(entityId: number) {
+    const entity = this.mineflayerBot.entities[entityId];
+
+    if (!entity) {
+      throw new Error(`No entity found with id ${entityId}`);
+    }
+
+    await this.mineflayerBot.activateEntity(entity);
+  }
+
   findNearbyBlocks(
     blockName: string,
     maxDistance: number = 16,
