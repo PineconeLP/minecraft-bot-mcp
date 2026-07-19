@@ -3,6 +3,7 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { InMemoryBotRegistry } from "./entities/bot/in-memory-bot-registry.js";
 import { createReadChatTool, createSendChatTool } from "./tools/chat.js";
+import { createClickOpenInventorySlotTool } from "./tools/click-open-inventory-slot.js";
 import { createCloseInventoryTool } from "./tools/close-inventory.js";
 import { createConnectTool } from "./tools/connect.js";
 import { createDisconnectTool } from "./tools/disconnect.js";
@@ -34,6 +35,7 @@ const toolFactories = [
   createEquipItemTool,
   createGetInventoryTool,
   createGetOpenInventoryTool,
+  createClickOpenInventorySlotTool,
 ];
 
 toolFactories.forEach((createTool) => {

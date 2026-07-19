@@ -37,6 +37,7 @@ Add the server to your MCP client's config:
 | `equip-item` | Equip an item from the bot's inventory to a destination slot (`hand`, `off-hand`, `head`, `torso`, `legs`, `feet`). Supports matching by custom (anvil-renamed) display name. |
 | `get-inventory` | Get the contents of the bot's inventory. Returns a list of items with `name`, `count`, `slot`, and `customName`. |
 | `get-open-inventory` | Get the contents of the bot's currently open window/container. Returns the window's `title`, `type`, and a list of items with `name`, `count`, `slot`, and `customName`. |
+| `click-open-inventory-slot` | Click a slot in the bot's currently open window/container. Supports left/right clicks and shift-clicking. |
 
 > More tools coming soon!
 

@@ -118,6 +118,29 @@ export class Bot {
     };
   }
 
+  async clickOpenInventorySlot(
+    slot: number,
+    button: "left" | "right",
+    shift: boolean,
+  ) {
+    const window = this.mineflayerBot.currentWindow;
+
+    if (!window) {
+      throw new Error("No window is currently open");
+    }
+
+    if (slot < 0 || slot >= window.slots.length) {
+      throw new Error(
+        `Slot ${slot} is out of range for the current window (0-${window.slots.length - 1})`,
+      );
+    }
+
+    const mouseButton = button === "left" ? 0 : 1;
+    const mode = shift ? 1 : 0;
+
+    await this.mineflayerBot.clickWindow(slot, mouseButton, mode);
+  }
+
   async equipItem(
     itemName: string,
     destination: mineflayer.EquipmentDestination,
