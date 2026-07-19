@@ -10,6 +10,7 @@ import { createEquipItemTool } from "./tools/equip-item.js";
 import { createFindNearbyBlocksTool } from "./tools/find-nearby-blocks.js";
 import { createFindNearbyEntitiesTool } from "./tools/find-nearby-entities.js";
 import { createGetInventoryTool } from "./tools/get-inventory.js";
+import { createGetOpenInventoryTool } from "./tools/get-open-inventory.js";
 import { createInteractEntityTool } from "./tools/interact-entity.js";
 import { createOpenContainerTool } from "./tools/open-container.js";
 
@@ -32,6 +33,7 @@ const toolFactories = [
   createInteractEntityTool,
   createEquipItemTool,
   createGetInventoryTool,
+  createGetOpenInventoryTool,
 ];
 
 toolFactories.forEach((createTool) => {

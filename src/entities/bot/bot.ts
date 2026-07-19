@@ -97,6 +97,27 @@ export class Bot {
       }));
   }
 
+  getOpenInventory() {
+    const currentWindow = this.mineflayerBot.currentWindow;
+
+    if (!currentWindow) {
+      return null;
+    }
+
+    return {
+      title: currentWindow.title,
+      type: currentWindow.type,
+      items: currentWindow.slots
+        .filter((slot): slot is Item => slot !== null)
+        .map((item) => ({
+          name: item.name,
+          count: item.count,
+          slot: item.slot,
+          customName: item.customName,
+        })),
+    };
+  }
+
   async equipItem(
     itemName: string,
     destination: mineflayer.EquipmentDestination,
