@@ -2,6 +2,7 @@
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { InMemoryBotRegistry } from "./entities/bot/in-memory-bot-registry.js";
+import { createAttackEntityTool } from "./tools/attack-entity.js";
 import { createReadChatTool, createSendChatTool } from "./tools/chat.js";
 import { createClickOpenInventorySlotTool } from "./tools/click-open-inventory-slot.js";
 import { createCloseInventoryTool } from "./tools/close-inventory.js";
@@ -32,6 +33,7 @@ const toolFactories = [
   createFindNearbyBlocksTool,
   createFindNearbyEntitiesTool,
   createInteractEntityTool,
+  createAttackEntityTool,
   createEquipItemTool,
   createGetInventoryTool,
   createGetOpenInventoryTool,

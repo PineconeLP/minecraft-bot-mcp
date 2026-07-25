@@ -217,6 +217,16 @@ export class Bot {
     await this.mineflayerBot.activateEntity(entity);
   }
 
+  attackEntity(entityId: number) {
+    const entity = this.mineflayerBot.entities[entityId];
+
+    if (!entity) {
+      throw new Error(`No entity found with id ${entityId}`);
+    }
+
+    this.mineflayerBot.attack(entity);
+  }
+
   findNearbyBlocks(
     blockName: string,
     maxDistance: number = 16,
