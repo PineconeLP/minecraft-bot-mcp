@@ -60,6 +60,10 @@ export class Bot {
     this.mineflayerBot.end();
   }
 
+  respawn() {
+    this.mineflayerBot.respawn();
+  }
+
   getChat(): ChatEntry[] {
     return this.chatHistory;
   }

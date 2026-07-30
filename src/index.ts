@@ -15,6 +15,7 @@ import { createGetInventoryTool } from "./tools/get-inventory.js";
 import { createGetOpenInventoryTool } from "./tools/get-open-inventory.js";
 import { createInteractEntityTool } from "./tools/interact-entity.js";
 import { createOpenContainerTool } from "./tools/open-container.js";
+import { createRespawnTool } from "./tools/respawn.js";
 
 const mcp = new McpServer({
   name: "minecraft-bot-mcp",
@@ -26,6 +27,7 @@ const toolContext = { mcp, botRegistry };
 const toolFactories = [
   createConnectTool,
   createDisconnectTool,
+  createRespawnTool,
   createReadChatTool,
   createSendChatTool,
   createOpenContainerTool,

@@ -27,6 +27,7 @@ Add the server to your MCP client's config:
 |------|-------------|
 | `connect` | Connect a bot to a Minecraft server. Returns a `botId` to control the bot in subsequent calls. |
 | `disconnect` | Disconnect a bot from the server. |
+| `respawn` | Respawn the bot after it has died. |
 | `read-chat` | Read recent chat messages seen by a bot. Accepts an optional `limit` for the number of recent messages to return. |
 | `send-chat` | Send a chat message as a bot. |
 | `open-container` | Open a container at given coordinates and return its contents. |
