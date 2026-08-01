@@ -231,6 +231,38 @@ export class Bot {
     this.mineflayerBot.attack(entity);
   }
 
+  async dig(x: number, y: number, z: number) {
+    const block = this.mineflayerBot.blockAt(new Vec3(x, y, z));
+
+    if (!block) {
+      throw new Error("No block found at given coordinates");
+    }
+
+    if (!this.mineflayerBot.canDigBlock(block)) {
+      throw new Error("Block cannot be dug or is out of reach");
+    }
+
+    await this.mineflayerBot.dig(block);
+  }
+
+  async placeBlock(
+    x: number,
+    y: number,
+    z: number,
+    faceVector: { x: number; y: number; z: number },
+  ) {
+    const referenceBlock = this.mineflayerBot.blockAt(new Vec3(x, y, z));
+
+    if (!referenceBlock) {
+      throw new Error("No block found at given coordinates");
+    }
+
+    await this.mineflayerBot.placeBlock(
+      referenceBlock,
+      new Vec3(faceVector.x, faceVector.y, faceVector.z),
+    );
+  }
+
   findNearbyBlocks(
     blockName: string,
     maxDistance: number = 16,

@@ -7,6 +7,7 @@ import { createReadChatTool, createSendChatTool } from "./tools/chat.js";
 import { createClickOpenInventorySlotTool } from "./tools/click-open-inventory-slot.js";
 import { createCloseInventoryTool } from "./tools/close-inventory.js";
 import { createConnectTool } from "./tools/connect.js";
+import { createDigBlockTool } from "./tools/dig-block.js";
 import { createDisconnectTool } from "./tools/disconnect.js";
 import { createEquipItemTool } from "./tools/equip-item.js";
 import { createFindNearbyBlocksTool } from "./tools/find-nearby-blocks.js";
@@ -15,6 +16,7 @@ import { createGetInventoryTool } from "./tools/get-inventory.js";
 import { createGetOpenInventoryTool } from "./tools/get-open-inventory.js";
 import { createInteractEntityTool } from "./tools/interact-entity.js";
 import { createOpenContainerTool } from "./tools/open-container.js";
+import { createPlaceBlockTool } from "./tools/place-block.js";
 import { createRespawnTool } from "./tools/respawn.js";
 
 const mcp = new McpServer({
@@ -34,6 +36,8 @@ const toolFactories = [
   createCloseInventoryTool,
   createFindNearbyBlocksTool,
   createFindNearbyEntitiesTool,
+  createDigBlockTool,
+  createPlaceBlockTool,
   createInteractEntityTool,
   createAttackEntityTool,
   createEquipItemTool,

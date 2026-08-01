@@ -33,6 +33,8 @@ Add the server to your MCP client's config:
 | `open-container` | Open a container at given coordinates and return its contents. |
 | `close-inventory` | Close the currently open container/inventory. |
 | `find-nearby-blocks` | Find blocks of a given type within a radius. |
+| `dig-block` | Dig (break) the block at given coordinates. The block must be within reach. |
+| `place-block` | Place the currently held item as a block against a reference block face. Equip the block in the bot's hand first. |
 | `find-nearby-entities` | Find entities near the bot within a radius, optionally filtered by type. Returns each entity's `id`, `name`, `type`, `username`, position, and `distance`. |
 | `interact-entity` | Right-click (use) an entity by its `id`, e.g. to interact with a villager. The entity must be within reach. |
 | `attack-entity` | Attack an entity by its `id`, e.g. to fight a mob. The entity must be within reach. |
